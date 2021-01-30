@@ -1,0 +1,18 @@
+buildscript {
+    ext {
+        springBootVersion = '2.4.2'
+    }
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'it.leobia'
+    version = '0.0.0'
+}

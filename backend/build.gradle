@@ -1,0 +1,77 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot'
+}
+
+group 'it.leobia'
+version '0.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://plugins.gradle.org/m2/' }
+}
+
+configurations {
+    providedRuntime
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDir '../frontend/build/dist'
+        }
+    }
+}
+
+configurations.all {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.boot:spring-boot-starter-tomcat'
+
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+processResources {
+    mustRunAfter ':frontend:npmBuild'
+}
+
+bootWar {
+
+    dependsOn ':frontend:npmBuild'
+
+    manifest {
+        attributes 'Created-By': System.getProperty('user.name'),
+                'Created-On': new Date().format('dd/MM/yyyy HH:mm:ss'),
+                //'Gradle-Version': GradleVersion.current(),
+                'Java-Version': System.getProperty('java.version')
+    }
+
+    destinationDirectory = file('dist')
+    archiveFileName = 'pago-tasse.war'
+}
+
+bootJar {
+    archiveName 'pago-tasse.jar'
+    dependsOn ':frontend:npmBuild'
+}
+
+task createWar {
+    group 'build'
+
+    def tasks = [clean, bootWar]
+    for (int i = 0; i < tasks.size() - 1; i++) {
+        tasks[i + 1].mustRunAfter(tasks[i])
+    }
+    dependsOn(tasks)
+}
+
+test {
+    useJUnitPlatform()
+}

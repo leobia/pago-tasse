@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<Configuration>
+    <Appenders>
+        <RollingFile name="logFile" fileName="${sys:user.home}/development/dev-tomcat/logs/report-tool.log" filePattern="${sys:user.home}/development/dev-tomcat/logs/report-tool-%d{MM-dd-yyyy}.%i.gz">
+            <PatternLayout pattern="%d - %replace{%t}{.*(ExecuteThread:.*)for queue.*}{$1} - %p [%c] - %m%n" />
+            <DefaultRolloverStrategy max="10" />
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.springframework" level="INFO">
+            <AppenderRef ref="logFile" />
+        </Logger>
+        <Logger name="it.leobia" level="DEBUG">
+            <AppenderRef ref="logFile" />
+        </Logger>
+
+    </Loggers>
+</Configuration>

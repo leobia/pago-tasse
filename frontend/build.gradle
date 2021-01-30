@@ -1,0 +1,30 @@
+plugins {
+    id 'com.github.node-gradle.node' version '2.2.2'
+}
+
+group 'it.leobia'
+version '0.0.0-SNAPSHOT'
+
+node {
+    version = '14.15.1'
+    npmVersion = '6.14.8'
+    distBaseUrl = 'https://nodejs.org/dist'
+    download = true
+    workDir = file("${project.buildDir}/nodejs")
+    npmWorkDir = file("${project.buildDir}/npm")
+    nodeModulesDir = file("${project.projectDir}")
+}
+
+task npmBuild(type: NpmTask) {
+    dependsOn 'npmInstall'
+    dependsOn 'clean'
+    args = ['run', 'build']
+}
+
+task clean() {
+    description 'Clean the dist folder'
+    group 'build'
+    doFirst {
+        delete 'build/dist'
+    }
+}
