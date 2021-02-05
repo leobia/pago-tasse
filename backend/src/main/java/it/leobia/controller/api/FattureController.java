@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(value = "/fatture")
+@RequestMapping(value = "/api/fatture")
 public class FattureController {
     private static final Logger LOGGER = LogManager.getLogger(FattureController.class);
 
