@@ -8,17 +8,23 @@ export default {
   extends: Line,
   mixins: [reactiveProp],
   props: {
-    chartdata: {
+    chartData: {
       type: Object,
-      default: null,
+      default: () => {},
     },
     options: {
       type: Object,
-      default: null,
+      default: () => {},
     },
   },
   mounted() {
-    this.renderChart(this.chartdata, this.options);
+    this.render();
+  },
+
+  methods: {
+    render() {
+      this.renderChart(this.chartData, this.options);
+    },
   },
 };
 </script>

@@ -1,15 +1,15 @@
 <template>
   <div id="app">
 
-    <vs-navbar text-white center-collapsed color="dark" v-model="active">
+    <vs-navbar text-white square center-collapsed color="dark" v-model="active">
       <template #left>
         <img src="/logo2.png" alt="">
       </template>
-      <vs-navbar-item :active="active === 'home'" id="home" to="/" @click="active = 'home'">
+      <vs-navbar-item :active="active === '/home'" id="home" to="/" @click="active = '/home'">
         Home
       </vs-navbar-item>
-      <vs-navbar-item :active="active === 'history'" id="history"
-                      @click="active = 'history'" to="/history">
+      <vs-navbar-item :active="active === '/history'" id="history"
+                      @click="active = '/history'" to="/history">
         History
       </vs-navbar-item>
     </vs-navbar>
@@ -22,12 +22,12 @@
 export default {
   data() {
     return {
-      active: 'home',
+      active: '/home',
     };
   },
 
   mounted() {
-
+    this.active = this.$router.currentRoute.path;
   },
 };
 </script>

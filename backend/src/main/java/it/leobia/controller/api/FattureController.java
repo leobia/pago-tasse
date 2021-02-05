@@ -23,7 +23,7 @@ public class FattureController {
 
     @GetMapping(value = "/all")
     public ResponseEntity<Object> allFatture() {
-        return new ResponseEntity<>(fattureRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(fattureRepository.findAllByOrderByData(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/insert", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -37,4 +37,15 @@ public class FattureController {
         }
     }
 
+
+    @PostMapping(value = "/delete", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> deleteFattura(@RequestBody Fatture fattura) {
+        try {
+            fattureRepository.delete(fattura);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            LOGGER.error(e);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

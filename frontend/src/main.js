@@ -32,30 +32,38 @@ new Vue({
   data: {
     loading: null,
     axiosInterceptor: null,
+    loadingCounter: 0,
   },
   methods: {
     enableInterceptor() {
       this.axiosInterceptor = this.axios.interceptors.request.use((config) => {
         this.loading = this.$vs.loading();
-
+        this.loadingCounter += 1;
         if (config && config.message) {
           this.showSuccess(config.message);
         }
 
         return config;
       }, (error) => {
-        this.loading.close();
+        this.loadingCounter -= 1;
+        if (this.loadingCounter <= 0) {
+          this.loading.close();
+        }
         this.showError(error.message);
         return Promise.reject(error);
       });
 
       this.axios.interceptors.response.use((response) => {
-        setTimeout(() => {
+        this.loadingCounter -= 1;
+        if (this.loadingCounter <= 0) {
           this.loading.close();
-        }, 150);
+        }
         return response;
       }, (error) => {
-        this.loading.close();
+        this.loadingCounter -= 1;
+        if (this.loadingCounter <= 0) {
+          this.loading.close();
+        }
         this.showError(error.message);
         return Promise.reject(error);
       });

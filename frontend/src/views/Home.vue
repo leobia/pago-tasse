@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <vs-row justify="center">
-      <vs-col offset="3" w="4">
+      <vs-col w="4">
         <vs-input
           dark
           class="form-input"

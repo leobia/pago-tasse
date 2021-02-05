@@ -1,5 +1,7 @@
 package it.leobia.controller.entities;
 
+import it.leobia.controller.utils.DateUtils;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -63,5 +65,9 @@ public class Fatture {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getDataFormatted() {
+        return DateUtils.formatDate(data);
     }
 }
