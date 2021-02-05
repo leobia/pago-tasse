@@ -5,7 +5,7 @@
       <template #left>
         <img src="@/assets/logo.png" alt="" sizes="32" >
       </template>
-      <vs-navbar-item :active="active === '/home'" id="home" to="/" @click="active = '/home'">
+      <vs-navbar-item :active="active === '/'" id="home" to="/" @click="active = '/'">
         Home
       </vs-navbar-item>
       <vs-navbar-item :active="active === '/history'" id="history"
