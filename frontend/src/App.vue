@@ -3,7 +3,7 @@
 
     <vs-navbar text-white square center-collapsed color="dark" v-model="active">
       <template #left>
-        <img src="/logo2.png" alt="">
+        <img src="@/assets/logo.png" alt="" sizes="32" >
       </template>
       <vs-navbar-item :active="active === '/home'" id="home" to="/" @click="active = '/home'">
         Home
