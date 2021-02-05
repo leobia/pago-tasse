@@ -1,1 +1,1 @@
-web: java -jar /backend/dist/pago-tasse.war
+web: java -jar ./backend/dist/pago-tasse.war
