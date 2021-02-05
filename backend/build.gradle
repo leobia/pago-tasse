@@ -76,3 +76,5 @@ task createWar {
 test {
     useJUnitPlatform()
 }
+
+task stage(dependsOn: ['createWar'])
