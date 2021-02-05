@@ -1,9 +1,9 @@
 <template>
   <div class="about">
-    <div class="container-history">
+    <div class="container-chart">
       <line-chart ref="lineChart" :chart-data="dataChart" :options="optionsChart"></line-chart>
     </div>
-    <div style="margin-top: 20px">
+    <div class="container-table" style="margin-top: 20px">
       <vs-table striped>
         <template #thead>
           <vs-tr>
@@ -200,41 +200,54 @@ export default {
 
 <style>
 @media (min-width: 1281px) {
-  .container-history {
+  .container-chart {
+    width: 50%;
+  }
+
+  .container-table {
     width: 50%;
   }
 }
 
 @media (min-width: 1025px) and (max-width: 1280px) {
 
-  .container-history {
+  .container-chart {
     width: 60%;
   }
-
+  .container-table {
+    width: 60%;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
 
-  .container-history {
+  .container-chart {
     width: 80%;
   }
-
+  .container-table {
+    width: 80%;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 767px) {
 
-  .container-history {
+  .container-chart {
     width: 90%;
   }
-
+  .container-table {
+    width: 90%;
+  }
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
 
-  .container-history {
+  .container-chart {
     width: 90%;
   }
 
+  .container-table {
+    width: 90%;
+  }
 }
 
 .about {

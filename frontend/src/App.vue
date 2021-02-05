@@ -1,15 +1,15 @@
 <template>
   <div id="app">
 
-    <vs-navbar text-white square center-collapsed color="dark" v-model="active">
+    <vs-navbar text-white square center-collapsed color="dark">
       <template #left>
         <img src="@/assets/logo.png" alt="" sizes="32" >
       </template>
-      <vs-navbar-item :active="active === '/'" id="home" to="/" @click="active = '/'">
+      <vs-navbar-item :active="activeTab === '/'" id="home" to="/" @click="activeTab = '/'">
         Home
       </vs-navbar-item>
-      <vs-navbar-item :active="active === '/history'" id="history"
-                      @click="active = '/history'" to="/history">
+      <vs-navbar-item :active="activeTab === '/history'" id="history"
+                      @click="activeTab = '/history'" to="/history">
         History
       </vs-navbar-item>
     </vs-navbar>
@@ -22,7 +22,7 @@
 export default {
   data() {
     return {
-      active: '/home',
+      activeTab: '/',
     };
   },
 
