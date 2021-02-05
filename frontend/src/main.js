@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 import Vuesax from 'vuesax';
 import App from './App.vue';
 import './registerServiceWorker';
@@ -19,7 +21,64 @@ Vue.use(Vuesax, {
   },
 
 });
+
+Vue.use(VueAxios, axios);
+
 new Vue({
   router,
+  mounted() {
+    this.enableInterceptor();
+  },
+  data: {
+    loading: null,
+    axiosInterceptor: null,
+  },
+  methods: {
+    enableInterceptor() {
+      this.axiosInterceptor = this.axios.interceptors.request.use((config) => {
+        this.loading = this.$vs.loading();
+
+        if (config && config.message) {
+          this.showSuccess(config.message);
+        }
+
+        return config;
+      }, (error) => {
+        this.loading.close();
+        this.showError(error.message);
+        return Promise.reject(error);
+      });
+
+      this.axios.interceptors.response.use((response) => {
+        setTimeout(() => {
+          this.loading.close();
+        }, 150);
+        return response;
+      }, (error) => {
+        this.loading.close();
+        this.showError(error.message);
+        return Promise.reject(error);
+      });
+    },
+
+    showError(message) {
+      this.$vs.notification({
+        color: 'danger',
+        position: 'top-center',
+        icon: '<i class=\'bx bxs-bug\' ></i>',
+        title: 'Error',
+        text: message,
+      });
+    },
+
+    showSuccess(message) {
+      this.$vs.notification({
+        color: 'success',
+        position: 'top-center',
+        icon: '<i class=\'bx bxs-check-circle\' ></i>',
+        text: message,
+      });
+    },
+  },
   render: (h) => h(App),
 }).$mount('#app');

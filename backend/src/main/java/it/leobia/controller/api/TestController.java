@@ -9,10 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     private static final Logger LOGGER = LogManager.getLogger(TestController.class);
 
-
     @GetMapping(value = "/test")
     public void test() {
-        LOGGER.info("eccolo");
+        LOGGER.info("test");
     }
 
 }

@@ -25,6 +25,10 @@ export default {
       active: 'home',
     };
   },
+
+  mounted() {
+
+  },
 };
 </script>
 

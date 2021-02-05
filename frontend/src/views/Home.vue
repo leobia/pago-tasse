@@ -35,7 +35,7 @@
         <vs-button
           class="form-input"
           gradient
-          :disabled="!fattura || !fattura.length > 0"
+          :disabled="!fattura || !fattura.length > 0 || !data || !data.length > 0"
           @click="save"
         >
           Salva
@@ -86,14 +86,22 @@ export default {
   },
 
   methods: {
-    save() {
+    async save() {
       const body = {
         fattura: this.fattura,
-        tasse: this.tasse,
+        tassa: this.tasse,
         guadagno: this.guadagno,
         data: this.data,
       };
-      console.log(body);
+
+      await this.$http.post('/api/fatture/insert', body, { message: 'Row inserted correctly' });
+
+      this.clear();
+    },
+
+    clear() {
+      this.data = '';
+      this.fattura = '';
     },
   },
 };
