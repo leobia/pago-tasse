@@ -35,7 +35,7 @@
         <vs-button
           class="form-input"
           gradient
-          :disabled="!fattura || !fattura.length > 0 || !data || !data.length > 0"
+          :disabled="saveDisabled"
           @click="save"
         >
           Salva
@@ -83,12 +83,24 @@ export default {
       }
       return guad;
     },
+
+    saveDisabled() {
+      const inputFattura = this.fattura;
+      const inputData = this.data;
+
+      if (!inputFattura || !inputFattura.length > 0 || !inputData || !inputData.length > 0) {
+        return true;
+      }
+
+      const fatturaNum = parseFloat(inputFattura.replace(',', '.').replace(' ', ''));
+      return Number.isNaN(fatturaNum);
+    },
   },
 
   methods: {
     async save() {
       const body = {
-        fattura: this.fattura,
+        fattura: parseFloat(this.fattura.replace(',', '.').replace(' ', '')),
         tassa: this.tasse,
         guadagno: this.guadagno,
         data: this.data,
