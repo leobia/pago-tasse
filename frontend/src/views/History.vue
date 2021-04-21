@@ -1,5 +1,12 @@
 <template>
   <div class="about">
+    <div class="center">
+      <vs-select placeholder="Select" v-model="yearSelected" label="Year" @change="loadFatture">
+        <vs-option v-for="year in years" :key="year" :label="year" :value="year">
+          {{ year }}
+        </vs-option>
+      </vs-select>
+    </div>
     <div class="container-chart">
       <line-chart ref="lineChart" :chart-data="dataChart" :options="optionsChart"></line-chart>
     </div>
@@ -35,6 +42,14 @@
               </vs-button>
             </vs-td>
           </vs-tr>
+
+          <vs-tr>
+            <vs-td v-for="(header, index) in tableHeaders" :key="index" class="is-bold">
+              {{totals[header.key]}}
+            </vs-td>
+            <vs-td></vs-td>
+          </vs-tr>
+
         </template>
       </vs-table>
     </div>
@@ -68,6 +83,18 @@
 
 <script>
 import LineChart from '@/components/LineChart.vue';
+
+function closeYears() {
+  const currentYear = new Date().getFullYear();
+  const start = currentYear - 10;
+  const end = currentYear + 10;
+
+  const years = [];
+  for (let i = start; i < end; i += 1) {
+    years.push(i);
+  }
+  return years;
+}
 
 export default {
   name: 'History',
@@ -115,7 +142,32 @@ export default {
 
       selectedRow: null,
       openConfirm: false,
+
+      yearSelected: new Date().getFullYear(),
+      years: closeYears(),
     };
+  },
+
+  computed: {
+    totals() {
+      const yearFatture = this.fatture;
+      const totalsObj = {
+        dataFormatted: 'TOTALE',
+        fattura: 0,
+        guadagno: 0,
+        tassa: 0,
+      };
+
+      if (yearFatture != null && yearFatture.length > 0) {
+        yearFatture.forEach((f) => {
+          totalsObj.fattura += f.fattura;
+          totalsObj.guadagno += f.guadagno;
+          totalsObj.tassa += f.tassa;
+        });
+      }
+
+      return totalsObj;
+    },
   },
 
   mounted() {
@@ -124,7 +176,8 @@ export default {
 
   methods: {
     async loadFatture() {
-      const response = await this.$http.get('/api/fatture/all');
+      const response = await this.$http.get(`/api/fatture/all?year=${this.yearSelected}`);
+
       this.fatture = response.data;
 
       const labels = [];
@@ -256,6 +309,7 @@ export default {
   align-items: center;
   min-height: 90vh;
   flex-direction: column;
+  padding-top: 70px;
 }
 
 .form-input {
@@ -268,7 +322,7 @@ export default {
   justify-content: flex-end;
 }
 .con-footer .vs-button {
-  margin: 0px;
+  margin: 0;
 }
 .con-footer .vs-button .vs-button__content {
   padding: 10px 30px;
@@ -277,17 +331,17 @@ export default {
   margin-left: 10px;
 }
 .not-margin {
-  margin: 0px;
+  margin: 0;
   font-weight: normal;
   padding: 10px;
-  padding-bottom: 0px;
+  padding-bottom: 0;
 }
 .con-content {
   width: 100%;
 }
 .con-content p {
   font-size: 0.8rem;
-  padding: 0px 10px;
+  padding: 0 10px;
 }
 .con-content .vs-checkbox-label {
   font-size: 0.8rem;
@@ -296,7 +350,7 @@ export default {
   width: 100%;
 }
 .con-content .vs-input-content {
-  margin: 10px 0px;
+  margin: 10px 0;
   width: calc(100%);
 }
 .con-content .vs-input-content .vs-input {
@@ -310,9 +364,9 @@ export default {
   width: calc(100%);
 }
 .footer-dialog .new {
-  margin: 0px;
+  margin: 0;
   margin-top: 20px;
-  padding: 0px;
+  padding: 0;
   font-size: 0.7rem;
 }
 .footer-dialog .new a {
@@ -323,6 +377,10 @@ export default {
   text-decoration: underline;
 }
 .footer-dialog .vs-button {
-  margin: 0px;
+  margin: 0;
+}
+
+.is-bold {
+  font-weight: bold;
 }
 </style>
